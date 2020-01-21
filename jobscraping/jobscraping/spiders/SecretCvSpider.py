@@ -13,7 +13,7 @@ class SecretCvSpider(scrapy.Spider):
     def parse(self, response):
         
         # basic query
-        query = '//*[@id="searchResults"]/li[contains(@class, "results__item")]'
+        query = '//*[@id="searchResults"]/li/article[contains(@id, "jobsearchresult")]'
         #query = '//*[contains(@class,"results__item")]'
 
         for result in response.xpath(query):
@@ -22,23 +22,21 @@ class SecretCvSpider(scrapy.Spider):
             item = JobscrapingItem()
             
             # Detail queries
-            item['job_id'] = result.xpath('*/@data-job-id').extract()[0]
-            item['job_title'] = result.xpath('*/@data-job-title').get()
-            item['salary'] = result.css('dd.job__details-value.salary::text').extract()[0]
+            item['job_id'] = result.xpath('*/h2/a/@data-job-id').get()
+            item['job_title'] = result.xpath('*/h2/a/@data-job-title').get()
+            #item['salary'] = result.css('dd.job__details-value.salary::text').extract()[0]
             item['job_type'] = result.css('dd[class = "job__details-value"]::text').extract()[0]
             #item['location'] = result.css('dd.job__details-value.location > span::text').extract()[0].strip()
             #item['url'] = result.xpath('.//a[@class="job-url"]/@href').get()
-            link = item['url'] = 'https://www.cv-library.co.uk'+result.xpath('//*/div/h2/a/@href').get()
+            link = item['url'] = 'https://www.cv-library.co.uk'+result.xpath('*/h2/a/@href').get()
             
             
             # Scraping each job page
             request = scrapy.Request(link,callback = self.job_parse)
             request.meta['item'] = item
             yield request
-            break
-            yield item
-    
-    
+            
+            
     def job_parse (self,response):
         item =  response.meta['item']
         item['job_salary'] = response.css('dd.job__details-value::text').extract()[1]
