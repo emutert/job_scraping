@@ -23,5 +23,7 @@ class JobscrapingItem(scrapy.Item):
     location = scrapy.Field()
     description = scrapy.Field()
     job_salary = scrapy.Field()
+    job_lenght = scrapy.Field()
+    job_refid = scrapy.Field()
 
     pass

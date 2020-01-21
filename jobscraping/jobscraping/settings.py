@@ -22,6 +22,9 @@ USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64; rv:7.0.1) Gecko/20100101 Firefox/7
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 
+DOWNLOAD_DELAY = .25
+RANDOMIZE_DOWNLOAD_DELAY = True
+
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
 
@@ -63,12 +66,11 @@ ROBOTSTXT_OBEY = False
 #    'scrapy.extensions.telnet.TelnetConsole': None,
 #}
 
-ITEM_PIPELINES = {'jobscraping.pipelines.MongoDBPipeline':300,}
+ITEM_PIPELINES = {'jobscraping.pipelines.MongoPipeline':300,}
 
-MONGODB_SERVER = "localhost"
-MONGODB_PORT = 27017
-MONGODB_DB = "JS_DB"
-MONGODB_COLLECTION = "SevretCV"
+MONGO_URI = 'mongodb://localhost:27017'
+MONGO_DB = "JS_DB"
+MONGO_COLLECTION = "SecretCV"
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
